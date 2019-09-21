@@ -1,0 +1,60 @@
+#include <iostream>
+#include <nnes/nnes.hpp>
+
+using namespace std;
+using namespace nnes;
+
+int main(int argc, char *argv[])
+{
+    // Training NN 1
+    cout << "Creating NN1..." << endl;
+
+    NN nn1(2, 1);
+    nn1.verbose(false);
+    nn1.addLayer(2); 
+    nn1.build();
+
+    DataSet trainingSet = nn1.createDataSet();
+
+    auto entry = trainingSet.createEntry();
+
+    entry << 0, 0, 0;
+    trainingSet.add(entry);
+    entry << 0, 1, 1;
+    trainingSet.add(entry);
+    entry << 1, 0, 1;
+    trainingSet.add(entry);
+    entry << 1, 1, 0;
+    trainingSet.add(entry);
+
+    cout << "Training set: " << endl;
+    trainingSet.print();
+
+    cout << "Training NN1..." << endl;
+    TrainingResults results = nn1.train(trainingSet, 100000, 0.001);
+    cout << "Training results NN1: " << endl;
+    results.print();
+
+    DataSet testSet1 = trainingSet.toTestSet();
+    nn1.test(testSet1);
+
+    cout << "Test results NN1: " << endl;
+    testSet1.print();
+
+    cout << "Saving NN1..." << endl;
+    nn1.save("xor.nn");
+
+    // Testing NN 2
+    cout << "Loading NN2..." << endl;
+
+    NN nn2;
+    nn2.load("xor.nn");
+
+    DataSet testSet2 = trainingSet.toTestSet();
+    nn2.test(testSet2);
+
+    cout << "Test results NN2: " << endl;
+    testSet2.print();
+
+    return 0;
+}
