@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <memory>
+#include <stdarg.h>
 #include <Eigen/Dense>
 #include "Activation.hpp"
 #include "DataSet.hpp"
@@ -16,12 +18,16 @@ namespace nnes
         private:
             bool isVerbose;
             unsigned int inputSize, outputSize;
-            Activation* defaultActivation;
-            Activation* inputActivation;
-            Activation* outputActivation;
+            ActivationPtr defaultActivation;
+            ActivationPtr inputActivation;
+            ActivationPtr outputActivation;
             std::vector<unsigned int> layersSize;
-            std::vector<Activation*> layersActivation;
+            std::vector< ActivationPtr > layersActivation;
             std::vector<Layer> layers;
+
+            std::vector< ActivationPtr > supportedActivations;
+            ActivationPtr getActivation(const std::string& name, bool allowDefault = false);
+            void init();
         public:
             NN();
             NN(unsigned int inputSize, unsigned int outputSize);
@@ -29,17 +35,23 @@ namespace nnes
 
             void verbose(bool v);
 
+            template<class A>
+            void registerActivation()
+            {
+                supportedActivations.push_back(ActivationPtr(new A()));
+            }
+
             void setInputSize(unsigned int size);
             void setOutputSize(unsigned int size);
-            void setInputActivation(Activation* activation);
-            void setOutputActivation(Activation* activation);
-            void setDefaultActivation(Activation* activation);
-            void addLayer(unsigned int size, Activation* activation = NULL);
-            void insertLayer(unsigned int pos, unsigned int size, Activation* activation = NULL);
-            void changeLayer(unsigned int pos, unsigned int size, Activation* activation = NULL);
+            void setInputActivation(std::string name = "", ...);
+            void setOutputActivation(std::string name = "", ...);
+            void setDefaultActivation(std::string name = "", ...);
+            void addLayer(unsigned int size, std::string name = "", ...);
+            void insertLayer(unsigned int pos, unsigned int size, std::string name = "", ...);
+            void changeLayer(unsigned int pos, unsigned int size, std::string name = "", ...);
             void removeLayer(unsigned int pos);
 
-            TrainingResults train(DataSet& trainingSet, unsigned int epochs = 10000, double error = 0.01, double learningRate = 0.1);
+            TrainingResults train(DataSet& trainingSet, const TrainingSettings& settings);
             void test(DataSet& testSet);
             Eigen::VectorXd test(const Eigen::VectorXd& data);
 

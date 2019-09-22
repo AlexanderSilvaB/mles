@@ -1,6 +1,7 @@
 #ifndef _NNES_LAYER_HPP_
 #define _NNES_LAYER_HPP_
 
+#include <memory>
 #include <Eigen/Dense>
 #include "Activation.hpp"
 #include <fstream>
@@ -13,13 +14,13 @@ namespace nnes
             unsigned int id;
             bool isOutput;
             Eigen::MatrixXd weight;
-            Activation *activation;
+            ActivationPtr activation;
 
             Eigen::MatrixXd z, dz, A, delta;
 
         public:
             Layer();
-            Layer(unsigned int id, unsigned int inputSize, unsigned int outputSize, Activation *activation, bool isOutput);
+            Layer(unsigned int id, unsigned int inputSize, unsigned int outputSize, ActivationPtr activation, bool isOutput);
             virtual ~Layer();
 
             double error(const Eigen::MatrixXd& y);

@@ -32,6 +32,11 @@ namespace nnes
                     return 0;
                 return 1;
             }
+
+            Activation* clone()
+            {
+                return new ReluActivation();
+            }
     };
 }
 

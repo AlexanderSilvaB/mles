@@ -3,17 +3,25 @@
 
 #include <Eigen/Dense>
 #include <string>
+#include <ostream>
+#include <istream>
+#include <memory>
 
 namespace nnes
 {
+    class Activation;
+    typedef std::shared_ptr<Activation> ActivationPtr;
+
     class Activation
     {
         private:
             std::string name;
+            int parametersSize;
         public:
-            Activation(const std::string& name)
+            Activation(const std::string& name, int parametersSize = 0)
             {
                 this->name = name;
+                this->parametersSize = parametersSize;
             }
 
             virtual ~Activation()
@@ -26,9 +34,34 @@ namespace nnes
                 return name;
             }
 
-            virtual bool is(const std::string& name)
+            int getParametersSize()
+            {
+                return parametersSize;
+            }
+
+            bool is(const std::string& name)
             {
                 return name == this->name;
+            }
+
+            virtual void getActivation(Eigen::MatrixXd& x, Eigen::MatrixXd& y)
+            {
+                y.resize(x.rows(), x.cols());
+                for(int i = 0; i < x.rows(); i++)
+                {
+                    for(int j = 0; j < x.cols(); j++)
+                        y(i,j) = this->getActivation(x(i,j));
+                }
+            }
+
+            virtual void getDerivative(Eigen::MatrixXd& x, Eigen::MatrixXd& y)
+            {
+                y.resize(x.rows(), x.cols());
+                for(int i = 0; i < x.rows(); i++)
+                {
+                    for(int j = 0; j < x.cols(); j++)
+                        y(i,j) = this->getDerivative(x(i,j));
+                }
             }
 
             virtual double getActivation(double x)
@@ -41,24 +74,19 @@ namespace nnes
                 return 0;
             }
 
-            void getActivation(Eigen::MatrixXd& x, Eigen::MatrixXd& y)
+            virtual Activation* clone()
             {
-                y.resize(x.rows(), x.cols());
-                for(int i = 0; i < x.rows(); i++)
-                {
-                    for(int j = 0; j < x.cols(); j++)
-                        y(i,j) = this->getActivation(x(i,j));
-                }
+                return new Activation(name);
             }
 
-            void getDerivative(Eigen::MatrixXd& x, Eigen::MatrixXd& y)
+            virtual void load(std::istream& f)
             {
-                y.resize(x.rows(), x.cols());
-                for(int i = 0; i < x.rows(); i++)
-                {
-                    for(int j = 0; j < x.cols(); j++)
-                        y(i,j) = this->getDerivative(x(i,j));
-                }
+
+            }
+
+            virtual void write(std::ostream& f)
+            {
+
             }
     };
 }

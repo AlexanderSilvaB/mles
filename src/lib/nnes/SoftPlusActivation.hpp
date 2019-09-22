@@ -1,38 +1,37 @@
-#ifndef _NNES_TANH_ACTIVATION_HPP_
-#define _NNES_TANH_ACTIVATION_HPP_
+#ifndef _NNES_SOFTPLUS_ACTIVATION_HPP_
+#define _NNES_SOFTPLUS_ACTIVATION_HPP_
 
 #include <cmath>
 #include "Activation.hpp"
 
 namespace nnes
 {
-    class TanhActivation : public Activation
+    class SoftPlusActivation : public Activation
     {
         public:
-            TanhActivation() : Activation("tanh")
+            SoftPlusActivation() : Activation("softplus")
             {
 
             }
 
-            ~TanhActivation()
+            ~SoftPlusActivation()
             {
 
             }
 
             double getActivation(double x)
             {
-                return tanh(x);
+                return log(1 + exp(x));
             }
 
             double getDerivative(double x)
             {
-                double y = getActivation(x);
-                return 1.0 - y*y;
+                return 1.0 / (1.0 + exp(-x));
             }
 
             Activation* clone()
             {
-                return new TanhActivation();
+                return new SoftPlusActivation();
             }
     };
 }

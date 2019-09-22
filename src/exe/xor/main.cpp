@@ -11,6 +11,9 @@ int main(int argc, char *argv[])
 
     NN nn1(2, 1);
     nn1.verbose(false);
+    nn1.setDefaultActivation("relu");
+    nn1.setInputActivation("relu");
+    nn1.setOutputActivation("softmax");
     nn1.addLayer(2); 
     nn1.build();
 
@@ -31,7 +34,10 @@ int main(int argc, char *argv[])
     trainingSet.print();
 
     cout << "Training NN1..." << endl;
-    TrainingResults results = nn1.train(trainingSet, 100000, 0.001);
+    TrainingSettings settings;
+    settings.epochs = 100000;
+    settings.maxError = 0.00001;
+    TrainingResults results = nn1.train(trainingSet, settings);
     cout << "Training results NN1: " << endl;
     results.print();
 

@@ -29,6 +29,11 @@ namespace nnes
                 double sx = getActivation(x);
                 return (sx * (1.0 - sx));
             }
+
+            Activation* clone()
+            {
+                return new SigmoidActivation();
+            }
     };
 }
 

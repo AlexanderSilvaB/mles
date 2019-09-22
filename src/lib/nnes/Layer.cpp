@@ -11,7 +11,7 @@ Layer::Layer()
 
 }
 
-Layer::Layer(unsigned int id, unsigned int inputSize, unsigned int outputSize, Activation *activation, bool isOutput)
+Layer::Layer(unsigned int id, unsigned int inputSize, unsigned int outputSize, ActivationPtr activation, bool isOutput)
 {
     this->id = id;
     this->isOutput = isOutput;

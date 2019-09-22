@@ -1,38 +1,37 @@
-#ifndef _NNES_TANH_ACTIVATION_HPP_
-#define _NNES_TANH_ACTIVATION_HPP_
+#ifndef _NNES_ASINH_ACTIVATION_HPP_
+#define _NNES_ASINH_ACTIVATION_HPP_
 
 #include <cmath>
 #include "Activation.hpp"
 
 namespace nnes
 {
-    class TanhActivation : public Activation
+    class AsinhActivation : public Activation
     {
         public:
-            TanhActivation() : Activation("tanh")
+            AsinhActivation() : Activation("asinh")
             {
 
             }
 
-            ~TanhActivation()
+            ~AsinhActivation()
             {
 
             }
 
             double getActivation(double x)
             {
-                return tanh(x);
+                return asinh(x);
             }
 
             double getDerivative(double x)
             {
-                double y = getActivation(x);
-                return 1.0 - y*y;
+                return 1.0 / sqrt(x*x + 1.0);
             }
 
             Activation* clone()
             {
-                return new TanhActivation();
+                return new AsinhActivation();
             }
     };
 }
