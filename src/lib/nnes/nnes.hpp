@@ -19,7 +19,6 @@ namespace nnes
             bool isVerbose;
             unsigned int inputSize, outputSize;
             ActivationPtr defaultActivation;
-            ActivationPtr inputActivation;
             ActivationPtr outputActivation;
             std::vector<unsigned int> layersSize;
             std::vector< ActivationPtr > layersActivation;
@@ -43,7 +42,6 @@ namespace nnes
 
             void setInputSize(unsigned int size);
             void setOutputSize(unsigned int size);
-            void setInputActivation(std::string name = "", ...);
             void setOutputActivation(std::string name = "", ...);
             void setDefaultActivation(std::string name = "", ...);
             void addLayer(unsigned int size, std::string name = "", ...);

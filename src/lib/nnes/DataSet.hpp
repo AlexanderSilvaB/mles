@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <Eigen/Dense>
+#include <string>
 
 namespace nnes
 {
@@ -23,10 +24,15 @@ namespace nnes
 
             void add(const Eigen::VectorXd& input, const Eigen::VectorXd& output);
             void add(const Eigen::VectorXd& entry);
+            void clear();
+
+            bool load(const std::string& fileName);
+            bool save(const std::string& fileName);
 
             unsigned int size();
             Eigen::VectorXd& getInput(unsigned int pos);
             Eigen::VectorXd& getOutput(unsigned int pos);
+            unsigned int getOutputMaxIndex(unsigned int pos);
 
             DataSet toTestSet();
 

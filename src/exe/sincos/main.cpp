@@ -13,8 +13,7 @@ int main(int argc, char *argv[])
     // Construct the NN model
     NN nn(2, 1);
     nn.setDefaultActivation("relu");
-    nn.setInputActivation("tanh");
-    nn.setOutputActivation("linear");
+    nn.setOutputActivation("linear", 1.0);
     nn.verbose(true);
     nn.addLayer(3); 
     nn.addLayer(5);

@@ -2,6 +2,7 @@
 #define _NNES_SOFTMAX_ACTIVATION_HPP_
 
 #include <cmath>
+#include <iostream>
 #include "Activation.hpp"
 
 namespace nnes
@@ -48,7 +49,7 @@ namespace nnes
                 Eigen::MatrixXd d;
                 getActivation(x, d);
                 Eigen::MatrixXd ones = Eigen::MatrixXd::Ones(d.rows(), d.cols());
-                y = d * (ones - d);
+                y = d.cwiseProduct(ones - d);
             }
 
             Activation* clone()

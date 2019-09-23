@@ -2,6 +2,7 @@
 #define _NNES_LINEAR_ACTIVATION_HPP_
 
 #include <cmath>
+#include <iostream>
 #include "Activation.hpp"
 
 namespace nnes

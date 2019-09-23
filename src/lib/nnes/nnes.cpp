@@ -66,7 +66,6 @@ void NN::init()
     registerActivation<SoftMaxActivation>();
 
     this->defaultActivation = ActivationPtr(new SigmoidActivation());
-    this->inputActivation = this->defaultActivation;
     this->outputActivation = this->defaultActivation;
     this->isVerbose = false;
 }
@@ -95,7 +94,6 @@ void NN::setDefaultActivation(string name, ...)
     defaultActivation = getActivation(name, true);
     LOAD_ARGS(defaultActivation);
 
-    inputActivation = defaultActivation;
     outputActivation = defaultActivation;
 }
 
@@ -107,12 +105,6 @@ void NN::setInputSize(unsigned int size)
 void NN::setOutputSize(unsigned int size)
 {
     outputSize = size;
-}
-
-void NN::setInputActivation(string name, ...)
-{
-    inputActivation = getActivation(name, true);
-    LOAD_ARGS(inputActivation);
 }
 
 void NN::setOutputActivation(string name, ...)
@@ -285,12 +277,14 @@ VectorXd NN::test(const VectorXd& data)
         a = layers[j].forward(a);
     }
 
-    return a;
+    return a.transpose();
 }
 
 bool NN::load(const std::string& fileName)
 {
     ifstream f(fileName);
+    if(!f.good())
+        return false;
 
     ActivationPtr activation;
 
@@ -324,13 +318,6 @@ bool NN::load(const std::string& fileName)
     f >> outputSize;
 
     // Layers activation
-    f >> name;
-    activation = getActivation(name);
-    if(!activation)
-        return false;
-    activation->load(f);
-    inputActivation = activation;
-    
     for(int i = 0; i < layersSize.size(); i++)
     {
         f >> name;
@@ -380,9 +367,6 @@ bool NN::save(const std::string& fileName)
     f << outputSize << endl;
 
     // Layers activation
-    f << inputActivation->getName() << " ";
-    inputActivation->write(f);
-    f << " ";
     for(int i = 0; i < layersActivation.size(); i++)
     {
         f << layersActivation[i]->getName() << " ";
@@ -412,7 +396,6 @@ void NN::build()
     sizes.insert(sizes.end(), outputSize);
 
     vector< ActivationPtr > activations = layersActivation;
-    activations.insert(activations.begin(), inputActivation);
     activations.insert(activations.end(), outputActivation);
 
     unsigned int i = 1;

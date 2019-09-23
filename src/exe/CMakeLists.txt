@@ -1,2 +1,3 @@
 add_subdirectory(xor)
 add_subdirectory(sincos)
+add_subdirectory(quad)

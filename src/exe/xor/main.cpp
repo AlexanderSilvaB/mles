@@ -6,14 +6,15 @@ using namespace nnes;
 
 int main(int argc, char *argv[])
 {
-    // Training NN 1
+    // Randomize
+    std::srand((unsigned int) time(0));
+
+    // Construct the NN model
     cout << "Creating NN1..." << endl;
 
     NN nn1(2, 1);
     nn1.verbose(false);
     nn1.setDefaultActivation("relu");
-    nn1.setInputActivation("relu");
-    nn1.setOutputActivation("softmax");
     nn1.addLayer(2); 
     nn1.build();
 
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
     cout << "Training NN1..." << endl;
     TrainingSettings settings;
     settings.epochs = 100000;
-    settings.maxError = 0.00001;
+    settings.maxError = 0.000001;
     TrainingResults results = nn1.train(trainingSet, settings);
     cout << "Training results NN1: " << endl;
     results.print();
