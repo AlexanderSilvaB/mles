@@ -90,3 +90,8 @@ void Layer::write(ofstream& f)
     }
     f << endl;
 }
+
+void Layer::print()
+{
+    cout << weight << endl;
+}

@@ -386,6 +386,40 @@ bool NN::save(const std::string& fileName)
     return true;
 }
 
+void NN::print()
+{
+    // Default activation
+    cout << "Default activation: " << defaultActivation->getName() << endl;
+
+    // Verbose
+    cout << "Verbose: " << isVerbose << endl;
+
+    // Layers size
+    cout << "Input size: " << inputSize << endl;
+    cout << "Output size: " << outputSize << endl;
+    cout << "Output activation: " << outputActivation->getName() << endl;
+    cout << "Hidden layers: " << layersSize.size() << endl;
+    cout << "Hidden layers sizes: ";
+    for(int i = 0; i < layersSize.size(); i++)
+        cout << layersSize[i] << " ";
+    cout << endl;
+
+    // Layers activation
+    cout << "Hidden layers activations: ";
+    for(int i = 0; i < layersActivation.size(); i++)
+        cout << layersActivation[i]->getName() << " ";
+    cout << endl;
+
+    // Layers
+    cout << "Layers weights:" << endl;
+
+    for(int i = 0; i < layers.size(); i++)
+    {
+        layers[i].print();
+        cout << endl;
+    }
+}
+
 void NN::build()
 {
     // Creating structure

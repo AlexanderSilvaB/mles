@@ -55,6 +55,7 @@ namespace nnes
 
             bool load(const std::string& fileName);
             bool save(const std::string& fileName);
+            void print();
             void build();
 
             DataSet createDataSet();

@@ -30,6 +30,7 @@ namespace nnes
 
             void load(std::ifstream& f);
             void write(std::ofstream& f);
+            void print();
 
     };
 }
