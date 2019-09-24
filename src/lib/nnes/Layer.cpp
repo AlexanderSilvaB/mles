@@ -26,6 +26,11 @@ Layer::~Layer()
     
 }
 
+void Layer::reset()
+{
+    weight = MatrixXd::Random(weight.rows(), weight.cols());
+}
+
 double Layer::error(const Eigen::MatrixXd& y)
 {
     MatrixXd error = A - y;

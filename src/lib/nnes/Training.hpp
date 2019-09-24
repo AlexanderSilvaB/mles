@@ -5,6 +5,9 @@
 
 namespace nnes
 {
+    #define MAX_EPOCHS -1
+    #define NO_BATCH -1
+
     typedef struct TrainingSettings_t
     {
         int epochs;
@@ -17,7 +20,7 @@ namespace nnes
         {
             epochs = 10000;
             maxError = 0.01;
-            learningRate = 0.1;
+            learningRate = 0.01;
             batch = -1;
             localMinimaLimit = 10;
         }

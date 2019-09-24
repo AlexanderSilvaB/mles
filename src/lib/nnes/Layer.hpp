@@ -32,6 +32,8 @@ namespace nnes
             void write(std::ofstream& f);
             void print();
 
+            void reset();
+
     };
 }
 

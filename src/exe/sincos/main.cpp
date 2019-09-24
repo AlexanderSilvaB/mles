@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     TrainingSettings settings;
     settings.epochs = -1;
     settings.batch = 10;
+    settings.learningRate = 0.1;
     settings.maxError = 0.005;
     TrainingResults results = nn.train(trainingSet, settings);
     cout << "Training results: " << endl;

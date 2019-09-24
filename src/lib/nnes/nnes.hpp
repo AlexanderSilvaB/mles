@@ -23,10 +23,15 @@ namespace nnes
             std::vector<unsigned int> layersSize;
             std::vector< ActivationPtr > layersActivation;
             std::vector<Layer> layers;
+            
+            bool transformInput, transformOutput;
+            Eigen::VectorXd inputA, inputB;
+            Eigen::VectorXd outputA, outputB;
 
             std::vector< ActivationPtr > supportedActivations;
             ActivationPtr getActivation(const std::string& name, bool allowDefault = false);
             void init();
+            void reset();
         public:
             NN();
             NN(unsigned int inputSize, unsigned int outputSize);
@@ -44,6 +49,13 @@ namespace nnes
             void setOutputSize(unsigned int size);
             void setOutputActivation(std::string name = "", ...);
             void setDefaultActivation(std::string name = "", ...);
+
+            Eigen::VectorXd createInputVector();
+            Eigen::VectorXd createOutputVector();
+
+            void setInputTransformation(const Eigen::VectorXd& a, const Eigen::VectorXd& b);
+            void setOutputTransformation(const Eigen::VectorXd& a, const Eigen::VectorXd& b);
+
             void addLayer(unsigned int size, std::string name = "", ...);
             void insertLayer(unsigned int pos, unsigned int size, std::string name = "", ...);
             void changeLayer(unsigned int pos, unsigned int size, std::string name = "", ...);

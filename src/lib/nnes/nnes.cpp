@@ -68,6 +68,8 @@ void NN::init()
     this->defaultActivation = ActivationPtr(new SigmoidActivation());
     this->outputActivation = this->defaultActivation;
     this->isVerbose = false;
+    this->transformInput = false;
+    this->transformOutput = false;
 }
 
 ActivationPtr NN::getActivation(const string& name, bool allowDefault)
@@ -113,6 +115,30 @@ void NN::setOutputActivation(string name, ...)
     LOAD_ARGS(outputActivation);
 }
 
+void NN::setInputTransformation(const Eigen::VectorXd& a, const Eigen::VectorXd& b)
+{
+    inputA = a;
+    inputB = b;
+    transformInput = true;
+}
+
+void NN::setOutputTransformation(const Eigen::VectorXd& a, const Eigen::VectorXd& b)
+{
+    outputA = a;
+    outputB = b;
+    transformOutput = true;
+}
+
+Eigen::VectorXd NN::createInputVector()
+{
+    return VectorXd(inputSize);
+}
+
+Eigen::VectorXd NN::createOutputVector()
+{
+    return VectorXd(outputSize);
+}
+
 void NN::addLayer(unsigned int size, string name, ...)
 {
     layersSize.push_back(size);
@@ -156,6 +182,12 @@ void NN::removeLayer(unsigned int pos)
     layersSize.erase(it);
 }
 
+void NN::reset()
+{
+    for(unsigned int j = 0; j < layers.size(); j++)
+        layers[j].reset();
+}
+
 TrainingResults NN::train(DataSet& trainingSet, const TrainingSettings& settings)
 {
     unsigned int epochs = 0;
@@ -185,6 +217,10 @@ TrainingResults NN::train(DataSet& trainingSet, const TrainingSettings& settings
     results.finished = false;
     results.elapsedTime = 0;
 
+    double thError = settings.maxError / 10000000.0;
+
+    Eigen::VectorXd input, output;
+
     auto start = std::chrono::high_resolution_clock::now();
 
     for(results.epochs = 0; results.epochs < epochs; results.epochs++)
@@ -203,8 +239,18 @@ TrainingResults NN::train(DataSet& trainingSet, const TrainingSettings& settings
 
             for(unsigned int i = n, j = 0; j < pickSize; i++, j++)
             {
-                X.block(j, 1, 1, inputSize) = trainingSet.getInput(i).transpose();
-                y.block(j, 0, 1, outputSize) = trainingSet.getOutput(i).transpose();
+                input = trainingSet.getInput(i);
+                output = trainingSet.getOutput(i);
+                if(transformInput)
+                {
+                    input = input.cwiseProduct(inputA) + inputB;
+                }
+                if(transformOutput)
+                {
+                    output = output.cwiseProduct(outputA) + outputB;
+                }
+                X.block(j, 1, 1, inputSize) = input.transpose();
+                y.block(j, 0, 1, outputSize) = output.transpose();
             }
 
             MatrixXd a = X;
@@ -228,16 +274,22 @@ TrainingResults NN::train(DataSet& trainingSet, const TrainingSettings& settings
             error += layers.back().error(y) / pickSize;
         }
         results.error = error;
-        if(error == lastError)
+        if(abs(error - lastError) < thError)
+        // if(error == lastError)
         {
             countError++;
+        }
+        else
+        {
+            countError = 0;
         }
         lastError = error;
 
         if(countError > settings.localMinimaLimit)
         {
+            cout << "Reseting..." << endl;
             countError = 0;
-            build();
+            reset();
         }
 
         if(isVerbose)
@@ -268,8 +320,14 @@ void NN::test(DataSet& testSet)
 
 VectorXd NN::test(const VectorXd& data)
 {
+    VectorXd input = data;
+    if(transformInput)
+    {
+        input = input.cwiseProduct(inputA) + inputB;
+    }
+
     MatrixXd a(1, inputSize + 1);
-    a.block(0, 1, 1, inputSize) = data.transpose();
+    a.block(0, 1, 1, inputSize) = input.transpose();
     a(0,0) = 1;
 
     for(unsigned int j = 0; j < layers.size(); j++)
@@ -277,7 +335,14 @@ VectorXd NN::test(const VectorXd& data)
         a = layers[j].forward(a);
     }
 
-    return a.transpose();
+    VectorXd output = a.transpose();
+    if(transformOutput)
+    {
+        output -= outputB;
+        output = output.cwiseProduct(outputA.cwiseInverse());
+    }
+
+    return output;
 }
 
 bool NN::load(const std::string& fileName)
@@ -335,6 +400,36 @@ bool NN::load(const std::string& fileName)
     activation->load(f);
     outputActivation = activation;
 
+    // Transformations
+    f >> transformInput;
+    f >> transformOutput;
+    if(transformInput)
+    {
+        inputA = createInputVector();
+        inputB = createInputVector();
+        double v;
+        for(int i = 0; i < inputSize; i++)
+        {
+            f >> v;
+            inputA(i) = v;
+            f >> v;
+            inputB(i) = v;
+        }
+    }
+    if(transformOutput)
+    {
+        outputA = createOutputVector();
+        outputB = createOutputVector();
+        double v;
+        for(int i = 0; i < outputSize; i++)
+        {
+            f >> v;
+            outputA(i) = v;
+            f >> v;
+            outputB(i) = v;
+        }
+    }
+
     // Building
     build();
 
@@ -375,6 +470,21 @@ bool NN::save(const std::string& fileName)
     }
     f << outputActivation->getName() << " ";
     outputActivation->write(f);
+    f << endl;
+
+    // Transformations
+    f << transformInput << " " << transformOutput << endl;
+    if(transformInput)
+    {
+        for(int i = 0; i < inputSize; i++)
+            f << inputA(i) << " " << inputB(i) << " ";
+    }
+    f << endl;
+    if(transformOutput)
+    {
+        for(int i = 0; i < outputSize; i++)
+            f << outputA(i) << " " << outputB(i) << " ";
+    }
     f << endl;
 
     // Layers
