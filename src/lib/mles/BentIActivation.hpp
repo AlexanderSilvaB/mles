@@ -1,10 +1,10 @@
-#ifndef _NNES_BENTI_ACTIVATION_HPP_
-#define _NNES_BENTI_ACTIVATION_HPP_
+#ifndef _MLES_BENTI_ACTIVATION_HPP_
+#define _MLES_BENTI_ACTIVATION_HPP_
 
 #include <cmath>
 #include "Activation.hpp"
 
-namespace nnes
+namespace mles
 {
     class BentIActivation : public Activation
     {

@@ -1,4 +1,4 @@
-#include "nnes.hpp"
+#include "mles.hpp"
 #include "SigmoidActivation.hpp"
 #include "AsinhActivation.hpp"
 #include "AtanActivation.hpp"
@@ -15,7 +15,7 @@
 #include <chrono>
 #include <sstream>
 
-using namespace nnes;
+using namespace mles;
 using namespace std;
 using namespace Eigen;
 
@@ -347,7 +347,7 @@ VectorXd NN::test(const VectorXd& data)
 
 bool NN::load(const std::string& fileName)
 {
-    ifstream f(fileName);
+    ifstream f(fileName+".nn");
     if(!f.good())
         return false;
 
@@ -442,7 +442,7 @@ bool NN::load(const std::string& fileName)
 
 bool NN::save(const std::string& fileName)
 {
-    ofstream f(fileName, ios::trunc);
+    ofstream f(fileName+".nn", ios::trunc);
     if(!f.good())
         return false;
 

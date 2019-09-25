@@ -2,8 +2,14 @@ include_directories(../../lib)
 
 find_package( OpenCV )
 
-set(SRC main.cpp Pong.cpp)
+if(OpenCV_FOUND)
 
-add_executable(pong ${SRC})
-target_link_libraries(pong  nnes)
-target_link_libraries( pong ${OpenCV_LIBS} )
+    set(SRC main.cpp Pong.cpp)
+
+    add_executable(pong ${SRC})
+    target_link_libraries(pong  mles)
+    target_link_libraries( pong ${OpenCV_LIBS} )
+
+else()
+    message(STATUS "OpenCV required to build pong")
+endif()

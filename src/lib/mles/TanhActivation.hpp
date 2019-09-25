@@ -1,10 +1,10 @@
-#ifndef _NNES_TANH_ACTIVATION_HPP_
-#define _NNES_TANH_ACTIVATION_HPP_
+#ifndef _MLES_TANH_ACTIVATION_HPP_
+#define _MLES_TANH_ACTIVATION_HPP_
 
 #include <cmath>
 #include "Activation.hpp"
 
-namespace nnes
+namespace mles
 {
     class TanhActivation : public Activation
     {

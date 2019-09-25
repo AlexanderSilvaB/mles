@@ -1,10 +1,10 @@
-#ifndef _NNES_ATAN_ACTIVATION_HPP_
-#define _NNES_ATAN_ACTIVATION_HPP_
+#ifndef _MLES_ATAN_ACTIVATION_HPP_
+#define _MLES_ATAN_ACTIVATION_HPP_
 
 #include <cmath>
 #include "Activation.hpp"
 
-namespace nnes
+namespace mles
 {
     class AtanActivation : public Activation
     {

@@ -1,8 +1,8 @@
 #include <iostream>
-#include <nnes/nnes.hpp>
+#include <mles/mles.hpp>
 
 using namespace std;
-using namespace nnes;
+using namespace mles;
 
 int main(int argc, char *argv[])
 {
@@ -49,13 +49,13 @@ int main(int argc, char *argv[])
     testSet1.print();
 
     cout << "Saving NN1..." << endl;
-    nn1.save("xor.nn");
+    nn1.save("xor");
 
     // Testing NN 2
     cout << "Loading NN2..." << endl;
 
     NN nn2;
-    nn2.load("xor.nn");
+    nn2.load("xor");
 
     DataSet testSet2 = trainingSet.toTestSet();
     nn2.test(testSet2);

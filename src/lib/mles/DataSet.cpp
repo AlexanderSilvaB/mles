@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-using namespace nnes;
+using namespace mles;
 using namespace std;
 using namespace Eigen;
 
@@ -107,7 +107,7 @@ unsigned int DataSet::getOutputMaxIndex(unsigned int pos)
 
 bool DataSet::load(const std::string& fileName)
 {
-    ifstream f(fileName);
+    ifstream f(fileName+".dataset");
     if(!f.good())
         return false;
 
@@ -149,7 +149,7 @@ bool DataSet::load(const std::string& fileName)
 
 bool DataSet::save(const std::string& fileName)
 {
-    ofstream f(fileName, ios::trunc);
+    ofstream f(fileName+".dataset", ios::trunc);
     if(!f.good())
         return false;
 

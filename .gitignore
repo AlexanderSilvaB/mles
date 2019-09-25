@@ -14,3 +14,4 @@ build*
 
 *.nn
 *.dataset
+*.ql

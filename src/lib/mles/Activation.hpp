@@ -1,5 +1,5 @@
-#ifndef _NNES_ACTIVATION_HPP_
-#define _NNES_ACTIVATION_HPP_
+#ifndef _MLES_ACTIVATION_HPP_
+#define _MLES_ACTIVATION_HPP_
 
 #include <Eigen/Dense>
 #include <string>
@@ -7,7 +7,7 @@
 #include <istream>
 #include <memory>
 
-namespace nnes
+namespace mles
 {
     class Activation;
     typedef std::shared_ptr<Activation> ActivationPtr;

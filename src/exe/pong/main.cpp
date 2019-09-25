@@ -1,9 +1,9 @@
 #include <iostream>
-#include <nnes/nnes.hpp>
+#include <mles/mles.hpp>
 #include "Pong.hpp"
 
 using namespace std;
-using namespace nnes;
+using namespace mles;
 
 int main(int argc, char *argv[])
 {
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     float py, bx, by, bv, v;
 
 
-    if(!nn.load("pong.nn"))
+    if(!nn.load("pong"))
     {
         pong.setMode(BEST);
 
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
         cout << "Training results: " << endl;
         results.print();
 
-        nn.save("pong.nn");
+        nn.save("pong");
     }
 
     pong.setMode(EXTERN);

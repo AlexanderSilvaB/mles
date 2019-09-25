@@ -1,1 +1,1 @@
-{"name": "nnes", "language": "cpp", "tool": "cmake-tools v0.1", "exes": ["xor", "sincos", "quad", "pong"], "version": "0.1", "descr": "Neural Networks Easy and Simple", "libs": ["nnes"]}
+{"name": "mles", "descr": "Machine Learning Easy and Simple", "tool": "cmake-tools v0.1", "language": "cpp", "version": "0.1", "exes": ["xor", "sincos", "quad", "pong", "snake"], "libs": ["mles"]}

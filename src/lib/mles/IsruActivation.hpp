@@ -1,42 +1,42 @@
-#ifndef _NNES_LINEAR_ACTIVATION_HPP_
-#define _NNES_LINEAR_ACTIVATION_HPP_
+#ifndef _MLES_ISRU_ACTIVATION_HPP_
+#define _MLES_ISRU_ACTIVATION_HPP_
 
 #include <cmath>
-#include <iostream>
 #include "Activation.hpp"
 
-namespace nnes
+namespace mles
 {
-    class LinearActivation : public Activation
+    class IsruActivation : public Activation
     {
         private:
             double a;
         public:
-            LinearActivation() : Activation("linear", 1)
+            IsruActivation() : Activation("isru", 1)
             {
-                a = 1.0;
+                this->a = 1.0;
             }
 
-            ~LinearActivation()
+            ~IsruActivation()
             {
 
             }
 
             double getActivation(double x)
             {
-                return a*x;
+                return x / sqrt(1.0 + a*x*x);
             }
 
             double getDerivative(double x)
             {
-                return a;
+                double y = 1 / sqrt(1.0 + a*x*x);
+                return y*y*y;
             }
 
             Activation* clone()
             {
-                LinearActivation* linear = new LinearActivation();
-                linear->a = a;
-                return linear;
+                IsruActivation* isru = new IsruActivation();
+                isru->a = a;
+                return isru;
             }
 
             void load(std::istream& f)

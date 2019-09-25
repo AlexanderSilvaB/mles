@@ -1,4 +1,4 @@
 cmake_minimum_required(VERSION 2.8)
-project(nnes)
+project(mles)
 
 add_subdirectory(src)

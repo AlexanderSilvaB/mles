@@ -1,10 +1,10 @@
-#ifndef _NNES_ASINH_ACTIVATION_HPP_
-#define _NNES_ASINH_ACTIVATION_HPP_
+#ifndef _MLES_ASINH_ACTIVATION_HPP_
+#define _MLES_ASINH_ACTIVATION_HPP_
 
 #include <cmath>
 #include "Activation.hpp"
 
-namespace nnes
+namespace mles
 {
     class AsinhActivation : public Activation
     {

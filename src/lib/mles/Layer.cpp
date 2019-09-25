@@ -2,7 +2,7 @@
 #include "SigmoidActivation.hpp"
 #include <iostream>
 
-using namespace nnes;
+using namespace mles;
 using namespace std;
 using namespace Eigen;
 

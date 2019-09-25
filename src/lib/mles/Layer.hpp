@@ -1,12 +1,12 @@
-#ifndef _NNES_LAYER_HPP_
-#define _NNES_LAYER_HPP_
+#ifndef _MLES_LAYER_HPP_
+#define _MLES_LAYER_HPP_
 
 #include <memory>
 #include <Eigen/Dense>
 #include "Activation.hpp"
 #include <fstream>
 
-namespace nnes
+namespace mles
 {
     class Layer
     {

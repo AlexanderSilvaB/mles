@@ -1,11 +1,11 @@
-#ifndef _NNES_SOFTMAX_ACTIVATION_HPP_
-#define _NNES_SOFTMAX_ACTIVATION_HPP_
+#ifndef _MLES_SOFTMAX_ACTIVATION_HPP_
+#define _MLES_SOFTMAX_ACTIVATION_HPP_
 
 #include <cmath>
 #include <iostream>
 #include "Activation.hpp"
 
-namespace nnes
+namespace mles
 {
     class SoftMaxActivation : public Activation
     {

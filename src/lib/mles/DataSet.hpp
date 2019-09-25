@@ -1,11 +1,11 @@
-#ifndef _NNES_DATA_SET_HPP_
-#define _NNES_DATA_SET_HPP_
+#ifndef _MLES_DATA_SET_HPP_
+#define _MLES_DATA_SET_HPP_
 
 #include <vector>
 #include <Eigen/Dense>
 #include <string>
 
-namespace nnes
+namespace mles
 {
     class DataSet
     {

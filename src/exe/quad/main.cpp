@@ -1,8 +1,8 @@
 #include <iostream>
-#include <nnes/nnes.hpp>
+#include <mles/mles.hpp>
 
 using namespace std;
-using namespace nnes;
+using namespace mles;
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     double x, y;
 
     // Try to load the model
-    bool loaded = nn.load("quad.nn");
+    bool loaded = nn.load("quad");
     if(!loaded)
     {
         // Construct the NN model if not loaded
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         cout << "Training results: " << endl;
         results.print();
 
-        nn.save("quad.nn");
+        nn.save("quad");
     }
 
     // Using the model

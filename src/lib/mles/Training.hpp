@@ -1,9 +1,9 @@
-#ifndef _NNES_TRAINING_HPP_
-#define _NNES_TRAINING_HPP_
+#ifndef _MLES_TRAINING_HPP_
+#define _MLES_TRAINING_HPP_
 
 #include <iostream>
 
-namespace nnes
+namespace mles
 {
     #define MAX_EPOCHS -1
     #define NO_BATCH -1

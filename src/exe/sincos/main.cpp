@@ -1,9 +1,9 @@
 #include <iostream>
-#include <nnes/nnes.hpp>
+#include <mles/mles.hpp>
 #include <cmath>
 
 using namespace std;
-using namespace nnes;
+using namespace mles;
 
 int main(int argc, char *argv[])
 {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     cout << "Test results: " << endl;
     testSet.print();
 
-    nn.save("sincos.nn");
+    nn.save("sincos");
 
     return 0;
 }
