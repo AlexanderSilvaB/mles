@@ -8,6 +8,8 @@ Pong::Pong(int width, int height)
 {
     img = Mat::zeros(height, width, CV_8UC1);
 
+    speedIncr = 0.001f;
+
     int w_2 = width / 2;
     int h_2 = height / 2;
 
@@ -80,6 +82,11 @@ void Pong::getOponentPosition(float& y)
 float Pong::getBallSpeed()
 {
     return baseV;
+}
+
+void Pong::setBallSpeedIncr(float speedIncr)
+{
+    this->speedIncr = speedIncr;
 }
 
 void Pong::getScore(int& p1, int& p2)
@@ -162,7 +169,7 @@ void Pong::update()
         return;
     }
 
-    baseV += count * 0.001f;
+    baseV += count * speedIncr;
 
     ballX += baseV * bVx * 0.03f;
     ballY += baseV * bVy * 0.03f;

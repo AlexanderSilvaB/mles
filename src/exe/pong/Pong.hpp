@@ -16,6 +16,7 @@ class Pong
         int scoreP1, scoreP2;
         int count, key;
         float baseV;
+        float speedIncr;
         PongModes mode;
 
         float ballX, ballY;
@@ -33,6 +34,7 @@ class Pong
         
         void getBallPosition(float& x, float& y);
         float getBallSpeed();
+        void setBallSpeedIncr(float speedIncr);
 
         void getPlayerPosition(float& y);
         void getOponentPosition(float& y);
