@@ -1,2 +1,2 @@
 # mles
-Neural Networks Easy and Simple
+Machine Learning Easy and Simple
