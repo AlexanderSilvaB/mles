@@ -148,62 +148,67 @@ int Snake::update()
 
     if(finished)
     {
-        string text = "Finished!";
-        int baseline = 0;
-        int thickness = 1;
-        double fontScale = 4.0;
-        int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
-        Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
-        baseline += thickness;
-
-        // center the text
-        Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
-
-        // draw the box
-        rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
-        // ... and the baseline first
-        line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
-
-        // then put the text itself
-        putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
-
-        imshow("Snake", img);
         if(dt > 0)
+        {
+            string text = "Finished!";
+            int baseline = 0;
+            int thickness = 1;
+            double fontScale = 4.0;
+            int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
+            Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
+            baseline += thickness;
+
+            // center the text
+            Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
+
+            // draw the box
+            rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
+            // ... and the baseline first
+            line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
+
+            // then put the text itself
+            putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
+
+            imshow("Snake", img);
             waitKey(30);
+        }
         return 0;
     }
 
     if(!ready)
     {
-        string text = "Snake";
-        int baseline = 0;
-        int thickness = 1;
-        double fontScale = 4.0;
-        int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
-        Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
-        baseline += thickness;
-
-        // center the text
-        Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
-
-        // draw the box
-        rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
-        // ... and the baseline first
-        line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
-
-        // then put the text itself
-        putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
-
-
-        imshow("Snake", img);
         if(dt > 0)
+        {
+            string text = "Snake";
+            int baseline = 0;
+            int thickness = 1;
+            double fontScale = 4.0;
+            int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
+            Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
+            baseline += thickness;
+
+            // center the text
+            Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
+
+            // draw the box
+            rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
+            // ... and the baseline first
+            line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
+
+            // then put the text itself
+            putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
+
+
+            imshow("Snake", img);
             waitKey(30);
+        }
         count++;
         if(count > 100)
         {
             count = 0;
             ready = true;
-            img.setTo(Scalar(0));
+            if(dt > 0)
+                img.setTo(Scalar(0));
         }
         return 0;
     }
@@ -292,35 +297,37 @@ int Snake::update()
         tail[0] = pair<int, int>(lastHeadX, lastHeadY);
     }
 
-    line(img, Point(0, size*textLimit + size*0.5), Point(img.cols, size*textLimit + size*0.5), Scalar(150), size);
-    line(img, Point(img.cols-size*0.5, size*textLimit + size*0.5), Point(img.cols-size*0.5, img.rows-size*0.5), Scalar(150), size);
-    line(img, Point(img.cols, img.rows-size*0.5), Point(size, img.rows-size*0.5), Scalar(150), size);
-    line(img, Point(size*0.5, img.rows-size*0.5), Point(size*0.5, size*textLimit + size*0.5), Scalar(150), size);
-
-    double r = size*0.5;
-    circle(img, Point(berryX*size + r, berryY*size + r), r, Scalar(255), CV_FILLED);
-    rectangle(img, Rect(headX*size, headY*size, size, size), Scalar(255), CV_FILLED);
-
-
-    for(int i = 0; i < tail.size(); i++)
-    {
-        rectangle(img, Rect(tail[i].first*size, tail[i].second*size, size, size), Scalar(220), CV_FILLED);
-    }
-
-    stringstream ss;
-    ss << "Lives: " << lives << "   Score: " << score;
-    putText(img, 
-            ss.str(),
-            Point(size, 3*size), // Coordinates
-            FONT_HERSHEY_COMPLEX_SMALL, // Font
-            1.0, // Scale. 2.0 = 2x bigger
-            Scalar(255), // BGR Color
-            1, // Line Thickness (Optional)
-            CV_AA);
-
-    imshow("Snake", img);
     if(dt > 0)
+    {
+        line(img, Point(0, size*textLimit + size*0.5), Point(img.cols, size*textLimit + size*0.5), Scalar(150), size);
+        line(img, Point(img.cols-size*0.5, size*textLimit + size*0.5), Point(img.cols-size*0.5, img.rows-size*0.5), Scalar(150), size);
+        line(img, Point(img.cols, img.rows-size*0.5), Point(size, img.rows-size*0.5), Scalar(150), size);
+        line(img, Point(size*0.5, img.rows-size*0.5), Point(size*0.5, size*textLimit + size*0.5), Scalar(150), size);
+
+        double r = size*0.5;
+        circle(img, Point(berryX*size + r, berryY*size + r), r, Scalar(255), CV_FILLED);
+        rectangle(img, Rect(headX*size, headY*size, size, size), Scalar(255), CV_FILLED);
+
+
+        for(int i = 0; i < tail.size(); i++)
+        {
+            rectangle(img, Rect(tail[i].first*size, tail[i].second*size, size, size), Scalar(220), CV_FILLED);
+        }
+
+        stringstream ss;
+        ss << "Lives: " << lives << "   Score: " << score;
+        putText(img, 
+                ss.str(),
+                Point(size, 3*size), // Coordinates
+                FONT_HERSHEY_COMPLEX_SMALL, // Font
+                1.0, // Scale. 2.0 = 2x bigger
+                Scalar(255), // BGR Color
+                1, // Line Thickness (Optional)
+                CV_AA);
+
+        imshow("Snake", img);
         key = waitKey(dt);
+    }
     count++;
 
     if(hit)

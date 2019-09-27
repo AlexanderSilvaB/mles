@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 
     DataSet testSet1 = trainingSet.toTestSet();
     nn1.test(testSet1);
+    testSet1.binarize();
 
     cout << "Test results NN1: " << endl;
     testSet1.print();
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
 
     DataSet testSet2 = trainingSet.toTestSet();
     nn2.test(testSet2);
+    testSet2.binarize();
 
     cout << "Test results NN2: " << endl;
     testSet2.print();

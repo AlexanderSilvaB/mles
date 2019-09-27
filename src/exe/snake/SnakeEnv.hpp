@@ -10,7 +10,6 @@ class SnakeEnv : public mles::QEnv
 {
     private:
         Snake snake;
-        bool training;
     public:
         SnakeEnv() : QEnv()
         {
@@ -53,6 +52,7 @@ class SnakeEnv : public mles::QEnv
             return getState();
         }
 
+        // State of 8 bits [ direction(0, 1, 2, 3){2 bits}, foodDirection(0, 1, 2, 3){2 bits}, danger(left, top, right, bottom){4 bits}]
         int getState()
         {
             int d, bd;

@@ -62,6 +62,11 @@ void QEnv::onDone()
 
 }
 
+void QEnv::onEpoch(int epoch)
+{
+
+}
+
 // QLearning
 QLearning::QLearning(QEnv* env)
 {
@@ -78,6 +83,21 @@ QLearning::~QLearning()
 
 }
 
+void QLearning::setDiscountFactor(double factor)
+{
+    this->discountFactor = factor;
+}
+
+void QLearning::setExplorationFactor(double factor)
+{
+    this->explorationFactor = factor;
+}
+
+void QLearning::setExploitationFactor(double factor)
+{
+    this->exploitationFactor = factor;
+}
+
 void QLearning::train(const TrainingSettings& settings)
 {
     bool done = false;
@@ -91,6 +111,8 @@ void QLearning::train(const TrainingSettings& settings)
     for(int i = 0; i < settings.epochs; i++)
     {
         state = env->reset();
+        env->onEpoch(i);
+        
         done = false;
         while(!done)
         {
@@ -156,7 +178,22 @@ bool QLearning::load(const std::string& fileName)
     if(!f.good())
         return false;
 
+    int r;
     double w;
+
+    f >> r;
+    if(r != env->getNumStates())
+        return false;
+    
+    f >> r;
+    if(r != env->getNumActions())
+        return false;
+
+    
+    f >> discountFactor;
+    f >> explorationFactor;
+    f >> exploitationFactor;
+
     for(int i = 0; i < Q.rows(); i++)
     {
         for(int j = 0; j < Q.cols(); j++)
@@ -173,6 +210,9 @@ bool QLearning::save(const string& fileName)
     ofstream f(fileName+".ql", ios::trunc);
     if(!f.good())
         return false;
+
+    f << env->getNumStates() << " " << env->getNumActions() << endl;
+    f << discountFactor << " " << explorationFactor << " " << exploitationFactor << endl;
 
     for(int i = 0; i < Q.rows(); i++)
     {

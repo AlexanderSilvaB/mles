@@ -216,6 +216,15 @@ TrainingResults NN::train(DataSet& trainingSet, const TrainingSettings& settings
     results.epochs = 0;
     results.finished = false;
     results.elapsedTime = 0;
+    results.errorCode = 0;
+
+    if(trainingSet.getInputSize() != inputSize || trainingSet.getOutputSize() != outputSize)
+    {
+        results.finished = true;
+        results.elapsedTime = 0;
+        results.errorCode = 1;
+        return results;
+    }
 
     double thError = settings.maxError / 10000000.0;
 

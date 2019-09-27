@@ -20,6 +20,7 @@ namespace mles
             virtual int getAction();
             virtual int reset();
             virtual bool ready();
+            virtual void onEpoch(int epoch);
             virtual bool step(int action, int& nextState, double& reward);
             virtual void onDone();
     };
@@ -36,6 +37,10 @@ namespace mles
             QLearning(QEnv* env);
             virtual ~QLearning();
             
+            void setDiscountFactor(double factor);
+            void setExplorationFactor(double factor);
+            void setExploitationFactor(double factor);
+
             void train(const TrainingSettings& settings);
             void run();
 

@@ -13,6 +13,11 @@ Pong::Pong(int width, int height)
     int w_2 = width / 2;
     int h_2 = height / 2;
 
+    dt = 30;
+    winMargin = 10;
+
+    command = NONE;
+
     wP = width / 50.0f;
     hP = height / 12.0f;
     bR = height / 26.0f;
@@ -51,6 +56,11 @@ Pong::~Pong()
 void Pong::setMode(PongModes mode)
 {
     this->mode = mode;
+}
+
+void Pong::control(PongCommands command)
+{
+    this->command = command;
 }
 
 float Pong::getPlayerSpeed()
@@ -105,77 +115,113 @@ bool Pong::isFinished()
     return finished;
 }
 
-void Pong::update()
+void Pong::setInterval(int dt)
+{
+    this->dt = dt;
+}
+
+void Pong::setWinMargin(int winMargin)
+{
+    this->winMargin = winMargin;
+}
+
+int Pong::update()
 {
     img.setTo(Scalar(0));
 
+    int reward = 0;
+
     if(finished)
     {
-        string text = "Finished!";
-        int baseline = 0;
-        int thickness = 1;
-        double fontScale = 4.0;
-        int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
-        Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
-        baseline += thickness;
+        if(dt > 0)
+        {
+            string text = "Finished!";
+            int baseline = 0;
+            int thickness = 1;
+            double fontScale = 4.0;
+            int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
+            Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
+            baseline += thickness;
 
-        // center the text
-        Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
+            // center the text
+            Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
 
-        // draw the box
-        rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
-        // ... and the baseline first
-        line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
+            // draw the box
+            rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
+            // ... and the baseline first
+            line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
 
-        // then put the text itself
-        putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
+            // then put the text itself
+            putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
 
-        imshow("Pong", img);
-        waitKey(30);
-        return;
+            imshow("Pong", img);
+            waitKey(30);
+        }
+        return reward;
     }
 
     if(!ready)
     {
-        string text = "PONG";
-        int baseline = 0;
-        int thickness = 1;
-        double fontScale = 4.0;
-        int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
-        Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
-        baseline += thickness;
+        if(dt > 0)
+        {
+            string text = "PONG";
+            int baseline = 0;
+            int thickness = 1;
+            double fontScale = 4.0;
+            int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
+            Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
+            baseline += thickness;
 
-        // center the text
-        Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
+            // center the text
+            Point textOrg((img.cols - textSize.width)/2, (img.rows + textSize.height)/2);
 
-        // draw the box
-        rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
-        // ... and the baseline first
-        line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
+            // draw the box
+            rectangle(img, textOrg + Point(0, baseline), textOrg + Point(textSize.width, -textSize.height), Scalar(255));
+            // ... and the baseline first
+            line(img, textOrg + Point(0, textSize.height / 3), textOrg + Point(textSize.width, textSize.height / 3), Scalar(255));
 
-        // then put the text itself
-        putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
+            // then put the text itself
+            putText(img, text, textOrg + Point(0, textSize.height / 4), fontFace, fontScale, Scalar(255), thickness, CV_AA);
 
 
-        imshow("Pong", img);
-        waitKey(30);
+            imshow("Pong", img);
+            waitKey(30);
+        }
         count++;
         if(count > 100)
         {
             count = 0;
             ready = true;
-            img.setTo(Scalar(0));
+            if(dt > 0)
+                img.setTo(Scalar(0));
         }
-        return;
+        return reward;
     }
+
+    float dtF = dt / 1000.0f;
+    if(dtF < 0.01f)
+        dtF = 0.01f;
 
     baseV += count * speedIncr;
 
-    ballX += baseV * bVx * 0.03f;
-    ballY += baseV * bVy * 0.03f;
+    ballX += baseV * bVx * dtF;
+    ballY += baseV * bVy * dtF;
 
-    p1Y += p1V * 0.03f;
-    p2Y += p2V * 0.03f;
+    p1Y += p1V * dtF;
+    if(mode == MANUAL)
+    {
+        if(command == UP || key == 'w')
+        {
+            p2Y -= 30;
+        }
+        else if(command == DOWN || key == 's')
+        {
+            p2Y += 30;
+        }
+    }
+    else
+        p2Y += p2V * dtF;
+
     if(p1Y < hP)
         p1Y = hP;
     else if(p1Y > img.rows - hP)
@@ -184,6 +230,7 @@ void Pong::update()
         p2Y = hP;
     else if(p2Y > img.rows - hP)
         p2Y = img.rows - hP;
+
 
     if(ballX <= bR)
     {
@@ -206,6 +253,12 @@ void Pong::update()
         baseV = 100;
         count = 0;
         p2V = 0;
+        reward = -1;
+    }
+
+    if(abs(scoreP1 - scoreP2) >= winMargin)
+    {
+        finish();
     }
 
     if(ballY <= bR || ballY >= img.rows - bR)
@@ -215,63 +268,52 @@ void Pong::update()
         bVx *= -1;
 
     if(ballX >= p2X - 2*wP && ballY >= p2Y - hP && ballY <= p2Y + hP && bVx > 0)
+    {
         bVx *= -1;
+        reward = 1;
+    }
 
-    p1V = (20.0f + ( (rand() % 1000) / 200.0f) ) * (ballY - p1Y);
+    p1V = (30.0f + ( (rand() % 1000) / 200.0f) ) * (ballY - p1Y);
 
     if(mode == BEST)
         p2V = (30.0f + ( (rand() % 1000) / 200.0f) ) * (ballY - p2Y);
     else if(mode == GOOD)
         p2V = (20.0f + ( (rand() % 1000) / 200.0f) ) * (ballY - p2Y);
-    else if(mode == MANUAL)
+
+    if(dt > 0)
     {
-        p2V = p2V * 0.99f;
-        if(key == 'w')
-        {
-            if(p2V > 0)
-                p2V = -100.0f;
-            else
-                p2V -= 20.0f;
-        }
-        else if(key == 's')
-        {
-            if(p2V < 0)
-                p2V = 100.0f;
-            else
-                p2V += 20.0f;
-        }
+        line(img, Point(img.cols/2, 0), Point(img.cols/2, img.rows), Scalar(255), 1);
+        circle(img, Point(ballX, ballY), bR, Scalar(255), CV_FILLED);
+        rectangle(img, Rect(p1X - wP, p1Y - hP, 2*wP, 2*hP), Scalar(255), CV_FILLED);
+        rectangle(img, Rect(p2X - wP, p2Y - hP, 2*wP, 2*hP), Scalar(255), CV_FILLED);
+
+        stringstream ss;
+        ss << scoreP1;
+        putText(img, 
+                ss.str(),
+                Point(img.cols/2 - 4*wP, 1*hP), // Coordinates
+                FONT_HERSHEY_COMPLEX_SMALL, // Font
+                1.0, // Scale. 2.0 = 2x bigger
+                Scalar(255), // BGR Color
+                1, // Line Thickness (Optional)
+                CV_AA);
+
+        ss.str("");
+        ss << scoreP2;
+        putText(img, 
+                ss.str(),
+                Point(img.cols/2 + 3*wP, 1*hP), // Coordinates
+                FONT_HERSHEY_COMPLEX_SMALL, // Font
+                1.0, // Scale. 2.0 = 2x bigger
+                Scalar(255), // BGR Color
+                1, // Line Thickness (Optional)
+                CV_AA);
+
+        imshow("Pong", img);
+        key = waitKey(dt);
     }
-
-    line(img, Point(img.cols/2, 0), Point(img.cols/2, img.rows), Scalar(255), 1);
-    circle(img, Point(ballX, ballY), bR, Scalar(255), CV_FILLED);
-    rectangle(img, Rect(p1X - wP, p1Y - hP, 2*wP, 2*hP), Scalar(255), CV_FILLED);
-    rectangle(img, Rect(p2X - wP, p2Y - hP, 2*wP, 2*hP), Scalar(255), CV_FILLED);
-
-    stringstream ss;
-    ss << scoreP1;
-    putText(img, 
-            ss.str(),
-            Point(img.cols/2 - 4*wP, 1*hP), // Coordinates
-            FONT_HERSHEY_COMPLEX_SMALL, // Font
-            1.0, // Scale. 2.0 = 2x bigger
-            Scalar(255), // BGR Color
-            1, // Line Thickness (Optional)
-            CV_AA);
-
-    ss.str("");
-    ss << scoreP2;
-    putText(img, 
-            ss.str(),
-            Point(img.cols/2 + 3*wP, 1*hP), // Coordinates
-            FONT_HERSHEY_COMPLEX_SMALL, // Font
-            1.0, // Scale. 2.0 = 2x bigger
-            Scalar(255), // BGR Color
-            1, // Line Thickness (Optional)
-            CV_AA);
-
-    imshow("Pong", img);
-    key = waitKey(30);
     count++;
+    return reward;
 }
 
 void Pong::reset()

@@ -8,6 +8,11 @@ enum PongModes
     GOOD, BEST, MANUAL, EXTERN
 };
 
+enum PongCommands
+{
+    NONE, UP, DOWN
+};
+
 class Pong
 {
     private:
@@ -18,6 +23,10 @@ class Pong
         float baseV;
         float speedIncr;
         PongModes mode;
+        PongCommands command;
+
+        int dt;
+        int winMargin;
 
         float ballX, ballY;
         float p1X, p1Y, p2X, p2Y;
@@ -28,6 +37,7 @@ class Pong
         virtual ~Pong();
 
         void setMode(PongModes mode);
+        void control(PongCommands commands);
         
         float getPlayerSpeed();
         void setPlayerSpeed(float v);
@@ -39,12 +49,16 @@ class Pong
         void getPlayerPosition(float& y);
         void getOponentPosition(float& y);
 
+        void setInterval(int dt);
+
+        void setWinMargin(int winMargin);
+
         void getScore(int& p1, int& p2);
 
         bool isReady();
         bool isFinished();
 
-        void update();
+        int update();
         void reset();
         void finish();
 };

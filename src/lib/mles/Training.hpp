@@ -2,6 +2,7 @@
 #define _MLES_TRAINING_HPP_
 
 #include <iostream>
+#include <string>
 
 namespace mles
 {
@@ -33,12 +34,21 @@ namespace mles
         double error;
         double elapsedTime;
 
+        int errorCode; 
+
         void print()
         {
-            std::cout << "Error: " << error << std::endl;
-            std::cout << "Epochs: " << epochs << std::endl;
-            if(finished)
-                std::cout << "Elapsed time: " << elapsedTime << "s" << std::endl;
+            if(errorCode != 0)
+            {
+                std::cout << "Error code: " << errorCode << std::endl;
+            }
+            else
+            {
+                std::cout << "Error: " << error << std::endl;
+                std::cout << "Epochs: " << epochs << std::endl;
+                if(finished)
+                    std::cout << "Elapsed time: " << elapsedTime << "s" << std::endl;
+            }
         }
 
     }TrainingResults;
