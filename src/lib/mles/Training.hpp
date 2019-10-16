@@ -16,6 +16,7 @@ namespace mles
         double learningRate;
         int batch;
         int localMinimaLimit;
+        bool allowReset;
 
         TrainingSettings_t()
         {
@@ -24,6 +25,7 @@ namespace mles
             learningRate = 0.01;
             batch = -1;
             localMinimaLimit = 10;
+            allowReset = true;
         }
     }TrainingSettings;
 

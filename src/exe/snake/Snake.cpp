@@ -142,6 +142,16 @@ void Snake::generateBerry()
     berryY = (textLimit + 1) + ( rand() % (height - textLimit - 2) );
 }
 
+int Snake::getLives()
+{
+    return lives;
+}
+
+void Snake::setLives(int lives)
+{
+    this->lives = lives;
+}
+
 int Snake::update()
 {
     img.setTo(Scalar(0));
@@ -340,7 +350,7 @@ int Snake::update()
         lastHeadY = headY;
         generateBerry();
         direction = 0;
-        if(lives < 0)
+        if(lives <= 0)
             finish();
         return -1;
     }

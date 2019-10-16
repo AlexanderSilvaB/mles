@@ -28,6 +28,7 @@ class SnakeEnv : public mles::QEnv
         {
             snake.resize(50, 50, 10);
             snake.setInterval(30);
+            snake.setLives(3);
         }
 
         int getNumStates()
@@ -67,6 +68,23 @@ class SnakeEnv : public mles::QEnv
             state |= (right & 0x1) << 6;
             state |= (bottom & 0x1) << 7;
             return state;
+        }
+
+        void onEpoch(int epoch)
+        {
+            if(epoch % 2500 == 0)
+            {
+                std::cout << "Evaluating current training" << std::endl;
+                snake.setInterval(10);
+                snake.setLives(1);
+                snake.resize(50, 50, 10);
+            }
+            else
+            {
+                snake.setInterval(0);
+                snake.setLives(3);
+                snake.resize(10, 10, 10);
+            }
         }
 
         bool ready()

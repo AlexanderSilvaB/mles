@@ -9,6 +9,12 @@ using namespace mles;
 using namespace std;
 using namespace Eigen;
 
+DataSet::DataSet()
+{
+    this->inputSize = 0;
+    this->outputSize = 0;
+}
+
 DataSet::DataSet(const DataSet& dataSet)
 {
     this->inputSize = dataSet.inputSize;
@@ -314,25 +320,31 @@ DataSet DataSet::toTestSet()
     return testSet;
 }
 
-void DataSet::print()
+void DataSet::print(bool onlyOutput)
 {
-    for(unsigned int i = 0; i < inputSize; i++)
+    if(!onlyOutput)
     {
-        cout << this->inputHeader[i];
-        if(i < inputSize-1)
-            cout << " ";
+        for(unsigned int i = 0; i < inputSize; i++)
+        {
+            cout << this->inputHeader[i];
+            if(i < inputSize-1)
+                cout << " ";
+        }
+        cout << " -> ";
+        for(unsigned int i = 0; i < outputSize; i++)
+        {
+            cout << this->outputHeader[i];
+            if(i < outputSize-1)
+                cout << " ";
+        }
+        cout << endl;
     }
-    cout << " -> ";
-    for(unsigned int i = 0; i < outputSize; i++)
-    {
-        cout << this->outputHeader[i];
-        if(i < outputSize-1)
-            cout << " ";
-    }
-    cout << endl;
     for(unsigned int i = 0; i < inputs.size(); i++)
     {
-        cout << i << ": " << inputs[i].transpose() << " -> " << outputs[i].transpose() << endl;
+        cout << i << ": ";
+        if(!onlyOutput)
+            cout << inputs[i].transpose() << " -> ";
+        cout << outputs[i].transpose() << endl;
     }
 }
 
@@ -355,6 +367,17 @@ void DataSet::classify()
         {
             outputs[i][j] = round(outputs[i][j]);
         }
+    }
+}
+
+void DataSet::binarizeToMax()
+{
+    int index;
+    for(unsigned int i = 0; i < outputs.size(); i++)
+    {
+        outputs[i].maxCoeff(&index);
+        outputs[i].setZero();
+        outputs[i][index] = 1;
     }
 }
 

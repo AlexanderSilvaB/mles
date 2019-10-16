@@ -19,6 +19,7 @@ namespace mles
             std::map < std::string, std::vector < std::string > > classMap;
             bool isNumeric(const std::string& text, double& value);
         public:
+            DataSet();
             DataSet(const DataSet& dataSet);
             DataSet(unsigned int inputSize, unsigned int outputSize);
             virtual ~DataSet();
@@ -51,8 +52,9 @@ namespace mles
 
             void binarize(double threshold = 0.5);
             void classify();
+            void binarizeToMax();
 
-            void print();
+            void print(bool onlyOutput = false);
     };
 }
 

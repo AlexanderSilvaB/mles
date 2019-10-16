@@ -48,6 +48,7 @@ class Snake
         void getBerryPosition(int& x, int& y);
         int getScore();
         int getLives();
+        void setLives(int lives);
         int getDirection();
         int getFoodDirection();
         void getDanger(bool& left, bool& top, bool& right, bool& bottom);

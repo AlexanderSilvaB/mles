@@ -85,10 +85,10 @@ class PongEnv : public mles::QEnv
 
         void onEpoch(int epoch)
         {
-            if(epoch % 100 == 0)
+            if(epoch % 2500 == 0)
             {
-                std::cout << "Visualizing train" << std::endl;
-                pong.setInterval(30);
+                std::cout << "Evaluating current training" << std::endl;
+                pong.setInterval(10);
             }
             else
                 pong.setInterval(0);

@@ -284,7 +284,6 @@ TrainingResults NN::train(DataSet& trainingSet, const TrainingSettings& settings
         }
         results.error = error;
         if(abs(error - lastError) < thError)
-        // if(error == lastError)
         {
             countError++;
         }
@@ -294,7 +293,7 @@ TrainingResults NN::train(DataSet& trainingSet, const TrainingSettings& settings
         }
         lastError = error;
 
-        if(countError > settings.localMinimaLimit)
+        if(settings.allowReset && countError > settings.localMinimaLimit)
         {
             cout << "Reseting..." << endl;
             countError = 0;
