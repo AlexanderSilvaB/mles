@@ -1,1 +1,1 @@
-{"name": "mles", "language": "cpp", "tool": "cmake-tools v0.1", "exes": ["xor", "sincos", "quad", "pong", "snake", "pong-rl", "csv", "mnist"], "version": "0.1", "descr": "Machine Learning Easy and Simple", "libs": ["mles", "eigen"]}
+{"name": "mles", "descr": "Machine Learning Easy and Simple", "tool": "cmake-tools v0.1", "language": "cpp", "version": "0.1", "exes": ["xor", "sincos", "quad", "pong", "snake", "pong-rl", "csv", "mnist", "tsp"], "libs": ["mles", "eigen"]}

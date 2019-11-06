@@ -3,5 +3,6 @@
 
 #include "NN.hpp"
 #include "QLearning.hpp"
+#include "GA.hpp"
 
 #endif
