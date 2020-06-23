@@ -47,9 +47,8 @@ public:
   void setOutputSize(unsigned int size);
   void setOutputActivation(std::string name = "", ...);
   void setDefaultActivation(std::string name = "", ...);
-  void setOutputActivationVec(std::string name = "", std::vector<double> &args);
-  void setDefaultActivationVec(std::string name = "",
-                               std::vector<double> &args);
+  void setOutputActivationVec(std::string name, std::vector<double> &args);
+  void setDefaultActivationVec(std::string name, std::vector<double> &args);
 
   Eigen::VectorXd createInputVector();
   Eigen::VectorXd createOutputVector();
@@ -65,12 +64,12 @@ public:
   void changeLayer(unsigned int pos, unsigned int size, std::string name = "",
                    ...);
   void removeLayer(unsigned int pos);
-  void addLayerVec(unsigned int size, std::string name = "",
+  void addLayerVec(unsigned int size, std::string name,
                    std::vector<double> &args);
-  void insertLayerVec(unsigned int pos, unsigned int size,
-                      std::string name = "", std::vector<double> &args);
-  void changeLayerVec(unsigned int pos, unsigned int size,
-                      std::string name = "", std::vector<double> &args);
+  void insertLayerVec(unsigned int pos, unsigned int size, std::string name,
+                      std::vector<double> &args);
+  void changeLayerVec(unsigned int pos, unsigned int size, std::string name,
+                      std::vector<double> &args);
 
   TrainingResults train(DataSet &trainingSet, const TrainingSettings &settings);
   void test(DataSet &testSet);
