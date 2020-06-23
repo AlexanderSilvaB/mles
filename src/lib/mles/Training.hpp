@@ -11,11 +11,11 @@ namespace mles
 
     typedef struct TrainingSettings_t
     {
-        int epochs;
         double maxError;
         double learningRate;
         int batch;
         int localMinimaLimit;
+        int epochs;
         bool allowReset;
 
         TrainingSettings_t()
@@ -31,12 +31,11 @@ namespace mles
 
     typedef struct
     {
-        bool finished;
-        unsigned int epochs;
         double error;
         double elapsedTime;
-
         int errorCode; 
+        unsigned int epochs;
+        bool finished;
 
         void print()
         {
