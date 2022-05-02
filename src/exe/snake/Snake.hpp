@@ -4,6 +4,14 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
+#ifndef CV_AA
+#define CV_AA cv::LINE_AA
+#endif
+
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
+
 enum SnakeModes
 {
     MANUAL, EXTERN

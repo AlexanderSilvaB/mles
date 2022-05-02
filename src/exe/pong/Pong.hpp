@@ -3,6 +3,15 @@
 
 #include <opencv2/opencv.hpp>
 
+#ifndef CV_AA
+#define CV_AA cv::LINE_AA
+#endif
+
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
+
+
 enum PongModes
 {
     GOOD, BEST, MANUAL, EXTERN

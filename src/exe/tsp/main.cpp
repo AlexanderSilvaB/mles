@@ -4,6 +4,14 @@
 #include <opencv2/opencv.hpp>
 #include "plot.hpp"
 
+#ifndef CV_AA
+#define CV_AA cv::LINE_AA
+#endif
+
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
+
 using namespace std;
 using namespace mles;
 using namespace cv;
